@@ -42,21 +42,21 @@ def lineofsight(self):
             if self.loc[1]-x+y <= self.loc[1]:
                 if [self.loc[0]-x+y,self.loc[1]-y] not in inlos:
                     inlos.append([self.loc[0]-x+y,self.loc[1]-y])
-    outlos = []
-    for location in inlos:
-        for sprite in all_sprites:
-            if sprite.loc == location and sprite.transparent == False:
-                outlos.append(location)
-    for location in outlos:
-        if location[0] > self.loc[0]:
-            if location[1] == self.loc[1]:
-                for i in range(1,self.vision+1):
-                    if [location[0]+1+i,location[1]] in inlos:
-                        inlos.remove([location[0]+1+i,location[1]])
-                    if [location[0]+1+i,location[1]-i] in inlos:
-                        inlos.remove([location[0]+1+i,location[1]-i])
-                    if [location[0]+1+i,location[1]+i]in inlos:
-                        inlos.remove([location[0]+1+i,location[1]+i])
+    # outlos = []
+    # for location in inlos:
+    #     for sprite in all_sprites:
+    #         if sprite.loc == location and sprite.transparent == False:
+    #             outlos.append(location)
+    # for location in outlos:
+    #     if location[0] > self.loc[0]:
+    #         if location[1] == self.loc[1]:
+    #             for i in range(1,self.vision+1):
+    #                 if [location[0]+1+i,location[1]] in inlos:
+    #                     inlos.remove([location[0]+1+i,location[1]])
+    #                 if [location[0]+1+i,location[1]-i] in inlos:
+    #                     inlos.remove([location[0]+1+i,location[1]-i])
+    #                 if [location[0]+1+i,location[1]+i]in inlos:
+    #                     inlos.remove([location[0]+1+i,location[1]+i])
         # elif location[0] < player.loc[0]
         # elif location[1] > player.loc[1]
         # elif location[1] < player.loc[1]
