@@ -10,6 +10,7 @@ all_sprites = pygame.sprite.Group()
 game_folder = os.path.dirname(__file__)
 img_folder = os.path.join(game_folder, 'img')
 spritesheet = pygame.image.load(os.path.join(img_folder, 'backgroundsheet.png'))
+charsheet = pygame.image.load(os.path.join(img_folder, 'characters.png'))
 BLACK = (0, 0, 0) #hex value of black
 GREEN = (0, 255, 0) #hex value of green
 
@@ -179,6 +180,9 @@ class Goblin(Enemy):
         self.name = "goblin"
         self.loc = loc
         self.enemysetup()
+    def sighted(self):
+        self.image.blit(spritesheet, (0,0), (x17(10),x17(8),16,16))
+        self.image.blit(charsheet, (0,0), (0,x17(3),16,16))
 
 def floorcreation():
     #deletes old floor
