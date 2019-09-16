@@ -25,7 +25,7 @@ def canmove(travelloc):
     return True
 
 def lineofsight(self):
-    #list of all blocks in line of sight
+    #list of all blocks in player line of sight
     inlos = []
     for x in range(1,self.vision+1):
         inlos.append([self.loc[0]-x,self.loc[1]])
@@ -96,6 +96,7 @@ class Player(pygame.sprite.Sprite):
             self.loc = [self.loc[0],self.loc[1]+1]
             self.rect.center = [self.rect.center[0],self.rect.center[1]+16]
             self.los = lineofsight(self)
+
 #! base sprite class for floors
 class Floorsprite(pygame.sprite.Sprite):
     #sprite initialization
@@ -149,6 +150,36 @@ class Wall(Floorsprite):
     def sighted(self):
         self.image.blit(spritesheet, (0,0), (x17(10),x17(2),16,16))
 
+#! Enemy classes
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self,loc):
+        self.name = "enemy" #name, helpful to find types of enemies
+        self.loc = loc #location on board
+        self.enemysetup()
+    def enemysetup(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.transparent = True #whether or not you can see through
+        self.travel = False #whether or not you can move through
+        self.type = "enemy" #type, helpful to grab all enemies
+        self.image = pygame.Surface((16, 16))
+        self.rect = self.image.get_rect()
+        self.rect.center = [400+self.loc[0]*16,50+self.loc[1]*16]
+    def sighted(self):
+        self.image.fill(GREEN)
+    def hide(self):
+        self.image.fill(BLACK)
+    def update(self):
+        if self.loc in player.los:
+            self.sighted()
+        else:
+            self.hide()
+
+class Goblin(Enemy):
+    def __init__(self,loc):
+        self.name = "goblin"
+        self.loc = loc
+        self.enemysetup()
+
 def floorcreation():
     #deletes old floor
     for sprite in all_sprites:
@@ -156,6 +187,7 @@ def floorcreation():
             sprite.kill()
         if sprite.type == "enemy":
             sprite.kill()
+    #creates new floor tiles
     for i in range(len(cfloor)):
         for x in range(len(cfloor[i])):
             if cfloor[x][i] == 9:
@@ -167,6 +199,10 @@ def floorcreation():
             else:
                 floorsprite = Floorsprite([i,x])
             all_sprites.add(floorsprite)
+    #creates new monsters
+    for mon in cmons:
+        goblin = Goblin(mon)
+        all_sprites.add(goblin)
 
 player = Player()
 floorcreation()
